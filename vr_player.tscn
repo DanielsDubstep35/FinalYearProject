@@ -1,0 +1,41 @@
+[gd_scene load_steps=7 format=3 uid="uid://b5watko74p4bt"]
+
+[ext_resource type="PackedScene" uid="uid://dunr2cpo4eric" path="res://mage.tscn" id="1_ychx3"]
+[ext_resource type="Environment" uid="uid://c1uafk5bs3sb6" path="res://PrototypeEnvironment.tres" id="2_r7bva"]
+[ext_resource type="CameraAttributesPhysical" uid="uid://d0oni7kvt0cwn" path="res://PrototypeCamAttributes.tres" id="3_uail8"]
+[ext_resource type="PackedScene" uid="uid://bj1aas6kty3qx" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_physics_tac_glove_low.tscn" id="4_rqyb1"]
+[ext_resource type="PackedScene" uid="uid://c2uvwvdlsfuep" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_physics_tac_glove_low.tscn" id="5_k252d"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_gawbm"]
+
+[node name="VRPlayer" type="RigidBody3D"]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[node name="Mage" parent="." instance=ExtResource("1_ychx3")]
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 2.08165e-12, -1.02301, 2.08165e-12)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_gawbm")
+
+[node name="AudioListener3D" type="AudioListener3D" parent="."]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 2.08165e-12, 0.5, 0.5)
+environment = ExtResource("2_r7bva")
+attributes = ExtResource("3_uail8")
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 2.08165e-12, 2.08165e-12)
+tracker = &"left_hand"
+
+[node name="LeftPhysicsHand" parent="XROrigin3D/LeftController" instance=ExtResource("4_rqyb1")]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, 0, 0)
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 2.08165e-12, 2.08165e-12)
+tracker = &"right_hand"
+
+[node name="RightPhysicsHand" parent="XROrigin3D/RightController" instance=ExtResource("5_k252d")]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, 0, 0)

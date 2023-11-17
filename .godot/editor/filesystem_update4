@@ -1,0 +1,9 @@
+res://Prototype.tscn
+res://FPSPlayer.gd
+res://PrototypeEnvironment.tres
+res://addons/godot-xr-tools/hands/animations/left/hand_blend_tree.tres
+res://addons/godot-xr-tools/hands/animations/right/hand_blend_tree.tres
+res://WallTexture/wall.tres
+res://main_menu.tscn
+res://options_menu.tscn
+res://vr_player.tscn

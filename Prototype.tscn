@@ -1,0 +1,108 @@
+[gd_scene load_steps=13 format=3 uid="uid://ch6payhannhny"]
+
+[ext_resource type="PackedScene" uid="uid://irw377xlrcrs" path="res://fyp_map.tscn" id="1_ri3dk"]
+[ext_resource type="Environment" uid="uid://c1uafk5bs3sb6" path="res://PrototypeEnvironment.tres" id="2_3sxtb"]
+[ext_resource type="CameraAttributesPhysical" uid="uid://d0oni7kvt0cwn" path="res://PrototypeCamAttributes.tres" id="3_86nah"]
+[ext_resource type="PackedScene" uid="uid://diyu06cw06syv" path="res://addons/godot-xr-tools/player/player_body.tscn" id="5_khtgn"]
+[ext_resource type="PackedScene" uid="uid://dunr2cpo4eric" path="res://mage.tscn" id="6_imnil"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/overrides/ground_physics_settings.gd" id="6_rc52i"]
+[ext_resource type="PackedScene" uid="uid://clc5dre31iskm" path="res://addons/godot-xr-tools/xr/start_xr.tscn" id="6_s6btr"]
+[ext_resource type="PackedScene" uid="uid://bj1aas6kty3qx" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/left_physics_tac_glove_low.tscn" id="7_ldcsk"]
+[ext_resource type="PackedScene" uid="uid://c2uvwvdlsfuep" path="res://addons/godot-xr-tools/hands/scenes/lowpoly/right_physics_tac_glove_low.tscn" id="8_rrkid"]
+[ext_resource type="PackedScene" uid="uid://drs4eeq721ojn" path="res://addons/godot-xr-tools/functions/movement_sprint.tscn" id="9_u7u5v"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/functions/movement_direct.gd" id="10_nlspx"]
+
+[sub_resource type="Resource" id="Resource_wumd6"]
+script = ExtResource("6_rc52i")
+flags = 19
+move_drag = 5.0
+move_traction = 30.0
+stop_on_slope = true
+move_max_slope = 45.0
+jump_max_slope = 45.0
+jump_velocity = 3.0
+bounciness = 0.0
+bounce_threshold = 1.0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="FYPMap" parent="." instance=ExtResource("1_ri3dk")]
+
+[node name="Walls" parent="FYPMap" index="1"]
+transform = Transform3D(20, 0, 0, 0, 20, 0, 0, 0, 20, 0, 0.0713286, 0)
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.52897, 17.3989)
+light_color = Color(1, 1, 0.235294, 1)
+light_energy = 5.0
+light_specular = 1.0
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("2_3sxtb")
+camera_attributes = ExtResource("3_86nah")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, -6.97574e-16, -1.5246e-23, -1.5246e-23, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0, 4.64965, 0)
+light_color = Color(0, 0, 0, 1)
+light_energy = 1.666
+light_volumetric_fog_energy = 2.778
+
+[node name="SpotLight3D" type="SpotLight3D" parent="."]
+transform = Transform3D(1, -6.97574e-16, -3.04919e-23, 0, -4.37114e-08, 1, -6.97574e-16, -1, -4.37114e-08, 0, 7.7487, 0)
+light_color = Color(0.945098, 0.968627, 0.588235, 1)
+light_energy = 5.0
+light_specular = 30.0
+spot_range = 30.0
+spot_angle = 90.0
+
+[node name="StartXR" parent="." instance=ExtResource("6_s6btr")]
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 5, 2.08165e-12)
+current = true
+
+[node name="AudioListener3D" type="AudioListener3D" parent="XROrigin3D"]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 2.08165e-12, 1.5, 0.5)
+environment = ExtResource("2_3sxtb")
+attributes = ExtResource("3_86nah")
+
+[node name="LeftController" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 2.08165e-12)
+tracker = &"left_hand"
+
+[node name="LeftPhysicsHand" parent="XROrigin3D/LeftController" instance=ExtResource("7_ldcsk")]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, 0, 0)
+
+[node name="MovementSprint" parent="XROrigin3D/LeftController" instance=ExtResource("9_u7u5v")]
+
+[node name="MovementDirect" type="Node" parent="XROrigin3D/LeftController" groups=["movement_providers"]]
+script = ExtResource("10_nlspx")
+strafe = true
+
+[node name="RightController" type="XRController3D" parent="XROrigin3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 1, 2.08165e-12)
+tracker = &"right_hand"
+
+[node name="RightPhysicsHand" parent="XROrigin3D/RightController" instance=ExtResource("8_rrkid")]
+transform = Transform3D(-1, 3.48787e-16, -8.74228e-08, 3.48787e-16, 1, -3.48787e-16, 8.74228e-08, -3.48787e-16, -1, 0, 0, 0)
+
+[node name="MovementSprint" parent="XROrigin3D/RightController" instance=ExtResource("9_u7u5v")]
+controller = 1
+
+[node name="MovementDirect" type="Node" parent="XROrigin3D/RightController" groups=["movement_providers"]]
+script = ExtResource("10_nlspx")
+strafe = true
+
+[node name="PlayerBody" parent="XROrigin3D" instance=ExtResource("5_khtgn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 6.5, 2.08165e-12)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+physics = SubResource("Resource_wumd6")
+
+[node name="Mage" parent="XROrigin3D" instance=ExtResource("6_imnil")]
+transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+
+[editable path="FYPMap"]
+[editable path="XROrigin3D/PlayerBody"]

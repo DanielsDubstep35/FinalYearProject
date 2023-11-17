@@ -1,0 +1,33 @@
+[gd_scene load_steps=8 format=3 uid="uid://irw377xlrcrs"]
+
+[ext_resource type="PackedScene" uid="uid://7k0pyayjl8wo" path="res://FYPMap.glb" id="1_gyngq"]
+[ext_resource type="Texture2D" uid="uid://cg535ln4prmqe" path="res://StoneBrickTexture/_albedo.png" id="2_xpg72"]
+[ext_resource type="Texture2D" uid="uid://d16xv1tov3mj8" path="res://StoneBrickTexture/_heightmap.png" id="3_6sa1c"]
+[ext_resource type="Texture2D" uid="uid://ccyu75x38j087" path="res://StoneBrickTexture/_normal.png" id="4_doypt"]
+[ext_resource type="Material" uid="uid://d2t16pon15llt" path="res://WallTexture/wall.tres" id="5_nf5d3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jm3pt"]
+albedo_texture = ExtResource("2_xpg72")
+metallic = 1.0
+normal_enabled = true
+normal_texture = ExtResource("4_doypt")
+heightmap_texture = ExtResource("3_6sa1c")
+uv1_scale = Vector3(10, 10, 10)
+uv1_triplanar = true
+grow_amount = -1.258
+
+[sub_resource type="FogMaterial" id="FogMaterial_424gk"]
+
+[node name="FYPMap" instance=ExtResource("1_gyngq")]
+
+[node name="Floor" parent="." index="0"]
+transform = Transform3D(21, 0, 0, 0, 21, 0, 0, 0, 21, 0, 0, 0)
+surface_material_override/0 = SubResource("StandardMaterial3D_jm3pt")
+
+[node name="Walls" parent="." index="1"]
+surface_material_override/0 = ExtResource("5_nf5d3")
+
+[node name="FogVolume" type="FogVolume" parent="." index="4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 9.5167, 0)
+size = Vector3(50, 2, 50)
+material = SubResource("FogMaterial_424gk")
